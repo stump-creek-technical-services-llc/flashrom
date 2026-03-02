@@ -37,7 +37,7 @@
 		.total_size	= 2048,
 		.page_size	= 256,
 		.feature_bits	= FEATURE_WRSR_EWSR,
-		.tested		= TEST_UNTESTED,
+		.tested		= TEST_OK_PR,
 		/* See 7.5.4 Read Identification (RDID) (9Fh)
 		 * (https://semic-boutique.com/wp-content/uploads/2016/05/ZB25VQ16.pdf#page=48) */
 		.probe		= PROBE_SPI_RDID,
