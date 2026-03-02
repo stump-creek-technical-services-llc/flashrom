@@ -87,6 +87,7 @@ const struct flashchip flashchips[] = {
 #include "flashchips/winbond.c"
 #include "flashchips/xmc.c"
 #include "flashchips/xtx.c"
+#include "flashchips/zbit.c"
 #include "flashchips/zetta.c"
 
 	/*
