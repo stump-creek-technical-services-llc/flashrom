@@ -442,7 +442,7 @@ struct flashchip {
 	uint32_t manufacture_id;
 	uint32_t model_id;
 
-	/* Total chip size in kilobytes */
+	/* Total chip size in kibibytes */
 	unsigned int total_size;
 	/* Chip page size in bytes */
 	unsigned int page_size;

@@ -30,11 +30,13 @@ const struct flashchip flashchips[] = {
 	 * .bustype		= Supported flash bus types (Parallel, LPC...)
 	 * .manufacture_id	= Manufacturer chip ID
 	 * .model_id		= Model chip ID
-	 * .total_size		= Total size in (binary) kbytes
+	 * .total_size		= Total size in kibibytes
 	 * .page_size		= Page or eraseblock(?) size in bytes
+	 * .feature_bits	= FEATURE_ flags
 	 * .tested		= Test status
+	 * .spi_cmd_set		= Defaults to SPI25, rarely needs changed
 	 * .probe		= Probe function
-	 * .probe_timing	= Probe function delay
+	 * .probe_timing	= Delay between enter/exit ID mode and commands, in microseconds, or predefined negative values
 	 * .block_erasers[]	= Array of erase layouts and erase functions
 	 * {
 	 *	.eraseblocks[]	= Array of { blocksize, blockcount }
@@ -45,6 +47,10 @@ const struct flashchip flashchips[] = {
 	 * .write		= Chip write function
 	 * .read		= Chip read function
 	 * .voltage		= Voltage range in millivolt
+	 * .gran		= Write granularity
+	 * .reg_bits		= Register bitmap.decode_range
+	 * .decode_range	= ?
+	 * .rpmc_ctx		= ?
 	 */
 
 /* TODO: Refactor implementation to avoid these .c includes */

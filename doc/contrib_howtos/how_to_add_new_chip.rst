@@ -153,11 +153,11 @@ does only support a single function each. The one that is best supported by exis
 but others should be noted in a comment if available.
 
 To see the full list of available functions, check definitions of ``enum read_func`` and ``enum write_func`` in ``include/flash.h``.
-To inspect the source code, check the mappings ``lookup_write_func_ptr`` and ``lookup_read_func_ptr`` and search for
-the function code.
+To inspect the source code, check the mappings ``lookup_read_func_ptr`` and ``lookup_write_func_ptr``, respectively,
+and search for the function code.
 
 The write granularity can be expressed by the ``.gran`` field. If you think you need something else than the default
-``write_gran_256bytes`` then you should definitely ask one of the regular flashrom hackers first.
+``WRITE_GRAN_256BYTES`` then you should definitely ask one of the regular flashrom hackers first.
 Possible values can be found in ``include/flash.h``.
 
 Erase
