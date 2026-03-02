@@ -1109,6 +1109,13 @@
 #define XTX_XT25F64B		0x4017
 #define XTX_XT25F128B		0x4018
 
+/* Datasheet https://semic-boutique.com/wp-content/uploads/2016/05/ZB25VQ16.pdf#33
+ * Table 7.4 Manufacturer and Device Identification(ZB25VQ16)
+ * OP Code 0x9F; Manufacturer ID = 0x5E; Memory Type = 0x60;  Capacity = 0x15
+ * However, the device actually sends 0x0E; 0x40; 0x15. I don't know why. */
+#define ZBIT_ID			0x0E	/* Zbit Semiconductor, Inc. */
+#define ZBIT_ZB25VQ16		0x4015
+
 #define ZETTA_ID		0xBA	/* Zetta Device */
 #define ZETTA_ZD25D20		0x2012
 #define ZETTA_ZD25D40		0x2013
