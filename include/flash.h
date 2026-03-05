@@ -429,26 +429,36 @@ typedef int (printlockfunc_t)(struct flashctx *flash);
 printlockfunc_t *lookup_printlock_func_ptr(struct flashctx *flash);
 
 struct flashchip {
+	/* Vendor name */
 	const char *vendor;
+	/* Chip name */
 	const char *name;
 
+	/* Bus types supported by the chip. */
 	enum chipbustype bustype;
 
 	/*
+	 * Manufacturer ID indicated by the chip.
+	 *
 	 * With 32bit manufacture_id and model_id we can cover IDs up to
 	 * (including) the 4th bank of JEDEC JEP106W Standard Manufacturer's
 	 * Identification code.
 	 */
 	uint32_t manufacture_id;
+	/* Model ID indicated by the chip */
 	uint32_t model_id;
 
-	/* Total chip size in kilobytes */
+	/* Total chip size in kibibytes */
 	unsigned int total_size;
 	/* Chip page size in bytes */
 	unsigned int page_size;
+	/* FEATURE_ flags */
 	int feature_bits;
 
-	/* Indicate how well flashrom supports different operations of this flash chip. */
+	/*
+	 * Indicate how well flashrom supports different operations of this
+	 * flash chip.
+	 */
 	struct tested {
 		enum test_state probe;
 		enum test_state read;
@@ -469,6 +479,7 @@ struct flashchip {
 		SPI_EDI = 1,
 	} spi_cmd_set;
 
+	/* The probe function used to identify this chip */
 	enum probe_func probe;
 
 	/* Delay after "enter/exit ID mode" commands in microseconds.
@@ -477,28 +488,62 @@ struct flashchip {
 	signed int probe_timing;
 
 	/*
-	 * Erase blocks and associated erase function. Any chip erase function
-	 * is stored as chip-sized virtual block together with said function.
-	 * The logic for how to optimally select erase functions is in erasure_layout.c
+	 * block_erasers is an array of struct block_eraser. Each element in the
+	 * array describes a way that this chip can be erased. While the name is
+	 * "block" eraser, it does not prescribe any particular size. It
+	 * describes whatever methods are actually supported by the chip.
+	 *
+	 * A struct block_eraser contains two members describing:
+	 *   - what can be erased
+	 *   - the function that erases
 	 */
 	struct block_eraser {
+		/*
+		 * eraseblocks is an array of struct eraseblock. Together, they
+		 * describe the layout of a chip, in terms of what can be
+		 * erased. Some chips divide their total capacity into
+		 * uniformly-sized blocks that can be erased. Those may be
+		 * described by a single struct eraseblock.
+		 *
+		 * Other chips support a certain number of one-sized block, and
+		 * the remainder of the chip in another size. Those will require
+		 * more than one struct eraseblock. Some can erase the entire
+		 * chip at once.
+		 *
+		 * Regardless, the sum total of bytes in all blocks of all sizes
+		 * must be equal to the size of the chip. The entire chip must
+		 * be covered by erasable blocks.
+	     */
 		struct eraseblock {
-			unsigned int size; /* Eraseblock size in bytes */
-			unsigned int count; /* Number of contiguous blocks with that size */
+			/* Eraseblock size in bytes */
+			unsigned int size;
+			/* Number of contiguous blocks with that size */
+			unsigned int count;
 		} eraseblocks[NUM_ERASEREGIONS];
-		/* a block_erase function should try to erase one block of size
-		 * 'blocklen' at address 'blockaddr' and return 0 on success. */
+		/*
+		 * The identifier of the function that erases the above blocks.
+		 * Most are identified by the opcode they use.
+		 *
+		 * Formally, a block_erase function should try to erase one
+		 * block of size 'blocklen' at address 'blockaddr' and return 0
+		 * on success.
+		 */
 		enum block_erase_func block_erase;
 	} block_erasers[NUM_ERASEFUNCTIONS];
 
 	enum printlock_func printlock;
+	/* Identifies the function to allow erasure or writing */
 	enum blockprotect_func unlock;
+	/* Identifies the function to write to the chip */
 	enum write_func write;
+	/* Identifies the function to read from the chip */
 	enum read_func read;
+	/* Voltage range that the chip supports, in millivolts */
 	struct voltage {
 		uint16_t min;
 		uint16_t max;
 	} voltage;
+	/* Identifies the layout of the chip in terms of write blocks */
 	enum write_granularity gran;
 
 	struct reg_bit_map {
